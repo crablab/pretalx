@@ -72,7 +72,7 @@
         <div class="table-responsive">
             <table class="table review-table table-hover table-flip">
                 <colgroup>
-                    {% if can_see_all_reviews %}<col class="nowrap">{% endif %}
+                    {% if can_see_all_reviews %}<col class="nowrap"><col class="nowrap">{% endif %}
                     {% for category in independent_categories %}<col class="nowrap">{% endfor %}
                     {% if can_review or submissions_reviewed %}<col class="nowrap">{% endif %}
                     <col class="nowrap">
@@ -93,6 +93,11 @@
                                 {% endif %}
                                 <a href="?{% url_replace request 'sort' 'score' %}"><i class="fa fa-caret-down" title="{% translate "Sort by score (highest first)" %}"></i></a>
                                 <a href="?{% url_replace request 'sort' '-score' %}"><i class="fa fa-caret-up" title="{% translate "Sort by score (lowest first)" %}"></i></a>
+                            </th>
+                            <th>
+                              {% translate "Standard Deviation" %}
+                              <a href="?{% url_replace request 'sort' 'score_standard_deviation' %}"><i class="fa fa-caret-down" title="{% translate "Sort by standard deviation (highest first)" %}"></i></a>
+                              <a href="?{% url_replace request 'sort' '-score_standard_deviation' %}"><i class="fa fa-caret-up" title="{% translate "Sort by standard deviation (lowest first)" %}"></i></a>
                             </th>
                             {% if independent_categories %}
                                 {% for category in independent_categories %}
@@ -143,6 +148,9 @@
                             {% if can_see_all_reviews %}
                                 <td class="text-center">
                                     {% review_score submission %}
+                                </td>
+                                <td class="text-center">
+                                  {% if submission.score_standard_deviation is None %}-{% else %}{{ submission.score_standard_deviation }}{% endif %}
                                 </td>
                                 {% if independent_categories %}
                                     {% for score in submission.independent_scores %}

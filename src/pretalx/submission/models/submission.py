@@ -713,6 +713,12 @@ class Submission(LogMixin, GenerateCode, FileCleanupMixin, models.Model):
         return round(mean_function(scores), 1) if scores else None
 
     @cached_property
+    def score_standard_deviation(self):
+        scores = [r.score for r in self.reviews.all() if r.score is not None]
+
+        return round(statistics.stdev(scores), 2) if len(scores) >= 2 else None
+
+    @cached_property
     def score_categories(self):
         track = self.track
         track_filter = models.Q(limit_tracks__isnull=True)

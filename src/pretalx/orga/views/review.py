@@ -167,10 +167,11 @@ class ReviewDashboard(
 
     def sort_queryset(self, queryset):
         order_prevalence = {
-            "default": ("is_assigned", "state", "current_score", "code"),
-            "score": ("current_score", "state", "code"),
-            "my_score": ("user_score", "current_score", "state", "code"),
+            "default": ("is_assigned", "state", "current_score", "score_standard_deviation", "code"),
+            "score": ("current_score", "score_standard_deviation", "state", "code"),
+            "my_score": ("user_score", "current_score", "score_standard_deviation", "state", "code"),
             "count": ("review_nonnull_count", "code"),
+            "score_standard_deviation": ("current_score", "state", "code"),
         }
         ordering = self.request.GET.get("sort", "default")
         reverse = True
